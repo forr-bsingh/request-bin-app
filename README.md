@@ -1,4 +1,4 @@
-# REQUESTBIN APP
+# REQUEST BIN APP
 
 [![CI](https://github.com/forr-bsingh/request-bin-app/actions/workflows/image.yml/badge.svg?branch=main)](https://github.com/forr-bsingh/request-bin-app/actions/workflows/image.yml)
 
