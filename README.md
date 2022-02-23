@@ -1,6 +1,6 @@
 # REQUESTBIN APP
 
-[![CI](https://github.com/Sharpedge2005/request-bin-app/actions/workflows/image.yml/badge.svg?branch=main)](https://github.com/Sharpedge2005/request-bin-app/actions/workflows/image.yml)
+[![CI](https://github.com/forr-bsingh/request-bin-app/actions/workflows/image.yml/badge.svg?branch=main)](https://github.com/forr-bsingh/request-bin-app/actions/workflows/image.yml)
 
 ## **Build Setup**
 
