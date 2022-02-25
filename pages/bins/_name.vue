@@ -27,7 +27,7 @@
             headerText="Operations"
             :pageRoute="currentPage"
             :listSize="listSize"
-            :showFooter=false
+            :showFooter="false"
           />
         </div>
         <Samples :url="findBin.baseUrl + findBin.binName + findBin.endpoint" />
@@ -51,7 +51,11 @@ export default {
         empty: true,
       },
       pageSize: 100,
+      watch: "",
     }
+  },
+  created() {
+    this.watch = setInterval(this.reloadOps, 10000)
   },
   components: {
     PagedContainer,
@@ -61,12 +65,10 @@ export default {
     let [content, sample] = await Promise.all([
       $axios
         .$get(
-          `/api/bins/${route.params.name}/ops?p=${
-            route.query.page !== undefined ? parseInt(route.query.page) : 1
-          }&l=${
-            route.query.size !== undefined
-              ? parseInt(route.query.size)
-              : $config.universal.pageSize
+          `/api/bins/${route.params.name}/ops?p=${route.query.page !== undefined ? parseInt(route.query.page) : 1
+          }&l=${route.query.size !== undefined
+            ? parseInt(route.query.size)
+            : $config.universal.pageSize
           }`
         )
         .then((response) => {
@@ -118,18 +120,31 @@ export default {
     reloadOps() {
       this.$axios
         .$get(
-          `/api/bins/${this.$route.params.name}/ops?p=${
-            this.$route.query.page !== undefined
-              ? parseInt(this.$route.query.page)
-              : 1
-          }&l=${
-            this.$route.query.size !== undefined
-              ? parseInt(this.$route.query.size)
-              : this.listSize
+          `/api/bins/${this.$route.params.name}/ops?p=${this.$route.query.page !== undefined
+            ? parseInt(this.$route.query.page)
+            : 1
+          }&l=${this.$route.query.size !== undefined
+            ? parseInt(this.$route.query.size)
+            : this.listSize
           }`
         )
         .then((response) => {
           this.content = response
+          if (this.$route.query.page > response.totalPages) {
+            console.log("No elements to show. Redirecting to previous page.");
+            let query = {
+              page: this.$route.query.page - 1 > 1 ? this.$route.query.page - 1 : 1,
+              size: this.$route.query.size,
+            }
+            this.$router.replace({
+              name: "bins_name",
+              query: {
+                ...this.$route.query,
+                ...query,
+              },
+              params: this.$route.params,
+            });
+          }
         })
         .catch((error) => {
           return error({
@@ -138,12 +153,18 @@ export default {
           })
         })
     },
+    resetWatchClock: function() {
+      clearInterval(this.watch)
+    }
   },
   watch: {
     '$route.query'() {
       this.reloadOps()
     },
   },
+  beforeDestroy() {
+    this.resetWatchClock()
+  }
 }
 </script>
 
