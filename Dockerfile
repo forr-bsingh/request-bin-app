@@ -1,4 +1,4 @@
-FROM node:14.15.0-alpine
+FROM node:20-alpine
 LABEL MAINTAINER="Baljeet Singh {sharpedge2005@gmail.com}"
 LABEL DESC="UI layer for REQUEST-BIN"
 
